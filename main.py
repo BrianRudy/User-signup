@@ -16,6 +16,8 @@
 #
 
 import webapp2
+import re
+import cgi
 
 page_header = """
 <!DOCTYPE html>
@@ -36,16 +38,6 @@ page_footer = """
 </html>
 """
 
-table_head = """
-    <table>
-        <tbody>
-"""
-
-table_foot = """
-        </tbody>
-    </table>
-"""
-
 class MainPage(webapp2.RequestHandler):
     def get(self):
 
@@ -63,7 +55,7 @@ class MainPage(webapp2.RequestHandler):
                         </td>
                         <td>
                             <label>
-                                <input type="text" name="username" value required/>
+                                <input type="text" name="username" value="username"/>
                             </label>
                         </td>
                     </tr>
@@ -128,21 +120,24 @@ class MainPage(webapp2.RequestHandler):
         content = page_header + main_content + page_footer
         self.response.write(content)
 
-#class Signup(webapp2.RequestHandler):
-#    def get(self):
-#        self.response.out.write(form)
-#
-#    def post(self):
-#        have_error = False
-#        username = self.request.get('username')
-#        password = self.request.get('password')
-#        verify = self.request.get('verify')
-#        email = self.request.get('email')
+class username(webapp2.RequestHandler):
+    def post(self):
+        username = self.request.get("username")
+
+        if username == "" or (username.strip() ==""):
+            error = "That's not a valid username"
+            error_escaped = cgi.escape(error, quote=True)
+
+            self.redirect("/?error=" + error_escaped)
+
+        if USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+            def valid_username(username):
+                return USER_RE.match(username)
 
 #class Welcome(BaseHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)
-#    ('/name' username)
+    ('/name' username)
 #    ('/password', password)
 ], debug=True)
