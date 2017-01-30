@@ -14,12 +14,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+<form>
+    <input name ="q">
+    <input type ="submit">
+</form>
+
 import webapp2
 
-class MainHandler(webapp2.RequestHandler):
+form="""
+<form action ="/Signup">
+    <input name ="q">
+    <input type ="submit">
+</form>
+"""
+
+#class MainHandler(webapp2.RequestHandler):
+#    def get(self):
+#        self.response.write('Heeeeello world!')
+
+#app = webapp2.WSGIApplication([
+#    ('/', MainHandler)
+#], debug=True)
+
+class MainPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        self.response.out.write(form)
+
+class Signup(webapp2.RequestHandler):
+    def get(self):
+        self.response.out.write(form)
+
+    def post(self):
+        have_error = False
+        username = self.request.get('username')
+        password = self.request.get('password')
+        verify = self.request.get('verify')
+        email = self.request.get('email')
+
+#class Welcome(BaseHandler):
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainPage),
+    ('/unit2/signup' Signup)
+#    ('/unit/welcome', Welcome)
 ], debug=True)
