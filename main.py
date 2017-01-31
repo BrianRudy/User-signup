@@ -30,6 +30,9 @@ page_header = """
         }
     </style>
 </head>
+    <h1>
+        Signup
+    </h1>
 <body>
 """
 
@@ -41,103 +44,81 @@ page_footer = """
 class MainPage(webapp2.RequestHandler):
     def get(self):
 
-        edit_header = "<h1>Signup</h1>"
+#        edit_header = "<h1>Signup</h1>"
 
         add_name = """
         <form action="/name" method="post">
             <table>
-                <tbody>
                     <tr>
+                        <td><label>Username</label></td>
                         <td>
-                            <label>
-                                Username
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="text" name="username" value="username"/>
-                            </label>
+                            <input type="text" name="username" value="" />
                         </td>
                     </tr>
         </form>
         """
 
         add_password = """
-        <form action="/password" method="post">
                     <tr>
-                        <td>
-                            <label>
-                                Password
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="text" name="password"/>
-                            </label>
-                        </td>
+                        <td><label>Password</label></td>
+                        <td><input type="text" name="password" /></td>
                     </tr>
-        </form>
-        """
-
-        verify_password = """
-        <form action="/verify" method="post">
-                    <tr>
-                        <td>
-                            <label>
-                                Verify Password
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="text" name="verify"/>
-                            </label>
-                        </td>
-                    </tr>
-        </form>
-        """
-
-        add_email = """
-        <form action="/email" method="post">
-                    <tr>
-                        <td>
-                            <label>
-                                Email (optional)
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="text" name="password"/>
-                            </label>
-                        </td>
-                    </tr>
-                </tbody>
             </table>
             <input type ="submit"/>
+
         </form>
         """
 
-        main_content = edit_header + add_name + add_password + verify_password + add_email
+#        verify_password = """
+#                    <tr>
+#                        <td><label>Verify Password</label></td>
+#                        <td><input type="text" name="verify" required/></td>
+#                    </tr>
+#        </form>
+#        """
+
+#        add_email = """
+#                    <tr>
+#                        <td><label>Email (optional)</label></td>
+#                        <td><input type="text" name="email" value=""/></td>
+#                    </tr>
+#            </table>
+#            <input type ="submit"/>
+#        </form>
+#        """
+
+        error = self.request.get("error")
+        error_element = "<p class='error'>" + error + "</p>" if error else ""
+
+#        main_content = add_name + add_password + verify_password + add_email + error_element
+        main_content = add_name + add_password + error_element
         content = page_header + main_content + page_footer
         self.response.write(content)
 
-class username(webapp2.RequestHandler):
+class Username(webapp2.RequestHandler):
     def post(self):
-        username = self.request.get("username")
+        user_name = self.request.get("username")
+        pass_word = self.request.get("password")
 
-        if username == "" or (username.strip() ==""):
-            error = "That's not a valid username"
+        if (user_name) == "" or (user_name.strip() == ""):
+            error = "That's not a valid username".format(user_name)
             error_escaped = cgi.escape(error, quote=True)
 
             self.redirect("/?error=" + error_escaped)
 
-        if USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
-            def valid_username(username):
-                return USER_RE.match(username)
+#        if USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+#            def valid_username(username):
+#                return USER_RE.match(username)
 
-#class Welcome(BaseHandler):
+        username_escape = cgi.escape(user_name, quote=True)
+
+        username_element = username_escape
+        sentence = "Welcome " + username_element
+        content = page_header + sentence
+        self.response.write(content)
 
 app = webapp2.WSGIApplication([
-    ('/', MainPage)
-    ('/name' username)
+    ('/', MainPage),
+    ('/name', Username)
 #    ('/password', password)
 ], debug=True)
